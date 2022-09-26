@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <title>Party Posts</title>
+
+</head>
+
+<body>
+  <div class="container">
+    {% for message in get_flashed_messages() %}
+    <p class="text-danger">{{message}}</p>
+    {% endfor %}
+
+
+    <h1>Welcome,{{logged_user.first_name}}!!!</h1>
+
+    <h3>All Posted Recipes</h3>
+
+    <div>
+      
+      <a class="btn btn-warning mt-2 float-end" href="/logout">Logout</a>
+      
+      <a class="btn btn-primary mt-2 float-end" href="/recipes/new">Create</a>
+    </div>
+
+
+
+
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Name</th>
+          <th scope="col">Under</th>
+          <th scope="col">Posted By</th>
+          <th scope="col">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for recipe in all_recipes %}
+        <tr>
+          <th scope="row">{{recipe.name}}</th>
+          <td>{% if recipe.under30 ==1%}True{%else%}False{%endif%}</td>
+          <td>{{recipe.planner.first_name}} {{recipe.planner.last_name}}</td>
+          <td>
+            <a href="/recipes/{{recipe.id}}">View Recipes</a>
+            {% if session['user_id'] == recipe.user_id %}
+            | <a href="/recipes/edit/{{recipe.id}}">Edit</a> |
+            <a href="recipes/{{recipe.id}}/delete">Delete</a>
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+
+      </tbody>
+    </table>
+  </div>
+</body>
+
+</html>
